@@ -1,3 +1,5 @@
+require 'ruby-prof'
+RubyProf.start
 require_relative 'log_parser'
 require_relative 'calculator'
 
@@ -31,3 +33,7 @@ end
 analytics[:url_counts].each do |url, data|
   display(url, data)
 end
+
+result = RubyProf.stop
+printer = RubyProf::FlatPrinter.new(result)
+printer.print(STDOUT)

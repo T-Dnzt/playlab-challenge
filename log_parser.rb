@@ -4,14 +4,15 @@ class LogParser
 
   def initialize(analytics, log_line)
     @analytics = analytics
-
+    rgx = /(?<datetime>[0-9.:T+-]*)\sheroku.*method=(?<method>.*)\spath=(?<path>.*)\shost=(?<host>.*)\sfwd="(?<fwd>.*)"\sdyno=(?<dyno>.*)\sconnect=(?<connect>\d+)ms\sservice=(?<service>\d+)ms\sstatus=(?<status>\d+)\sbytes=(?<bytes>\d+)/i
+    request = log_line.match(rgx)
     # Explode the log line and get out the relevant data
     log_line_content = log_line.split(' ')
-    @method = log_line_content[3].gsub('method=', '')
-    @url = log_line_content[4].gsub('path=', '')
-    @dyno = log_line_content[7].gsub('dyno=', '')
-    @connect = log_line_content[8].gsub('connect=', '').gsub('ms', '')
-    @service = log_line_content[9].gsub('service=', '').gsub('ms', '')
+    @method = request['method']
+    @url = request['path']
+    @dyno = request['dyno']
+    @connect = request['connect']
+    @service = request['service']
   end
 
   def run
