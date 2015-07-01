@@ -1,7 +1,7 @@
 require_relative 'log_parser'
 require_relative 'calculator'
 
-file = File.open( 'samplebig.log' )
+file = File.open( 'sample.log' )
 
 # The analytics hash holds all the information related to the stats
 # we want to collect.
@@ -18,9 +18,7 @@ analytics = {
 }
 
 # Delegate the parsing of each line in the file to LogParser
-t1 = Time.now
 file.each_line { |log_line| LogParser.new(analytics, log_line).run }
-t2 = Time.now - t1
 
 def display(url, data)
   calc = Calculator.new(data)
@@ -33,5 +31,3 @@ end
 analytics[:url_counts].each do |url, data|
   display(url, data)
 end
-
-p "Time to parse : #{t2}"
